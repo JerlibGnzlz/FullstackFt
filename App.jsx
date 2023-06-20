@@ -4,9 +4,14 @@ import Login from './paginas/Login';
 import Registrar from './paginas/Registrar';
 import OlvidePassword from './paginas/OlvidePassword';
 import ConfirmarCuenta from './paginas/ConfirmarCuenta';
+import NuevoPassword from './paginas/NuevoPassword';
 
 
 const App = () => {
+
+
+
+
   return (
     <BrowserRouter>
       <Routes>
@@ -14,6 +19,7 @@ const App = () => {
           <Route index element={<Login />} />
           <Route path='registrar' element={<Registrar />} />
           <Route path='olvidePassword' element={<OlvidePassword />} />
+          <Route path='olvidePassword/:token' element={<NuevoPassword />} />
           <Route path='confirmar/:id' element={< ConfirmarCuenta />} />
         </Route >
       </Routes>
