@@ -1,6 +1,39 @@
 import { Link } from "react-router-dom";
+import { useState } from "react";
+import { clienteAxios } from "../config/axios";
+import Alerta from "../components/Alerta";
+
+
 
 const OlvidePassword = () => {
+
+
+    const [email, setEmail] = useState("");
+    const [alerta, setAlerta] = useState({});
+
+
+    const handleSubmit= async(e)=>{
+            e.preventDefault()
+
+            if(email===""|| email.length<6){
+                setAlerta({msg:"EL email es obligatorio",error:true})
+                return
+            }
+            try {
+                const { data } = await clienteAxios.post("/veterinarios/olvidePassword",{email})
+                console.log(data)
+
+                setAlerta({msg:data.msg})
+            } catch (error) {
+                setAlerta({
+                    msg:error.response.data.msg,
+                    error:true
+                })
+            }
+    }
+
+const {msg}=alerta
+
     return (
         <>
             <div>
@@ -8,12 +41,22 @@ const OlvidePassword = () => {
             </div>
 
             <div className="mt-20 shadow-lg py-10 px-5 rounded-lg md:mt-5 bg-white">
-                <form>
+           
+                {msg && <Alerta alerta={alerta}/>}
+                <form
+
+                onSubmit={handleSubmit}
+                
+                >
                     <div>
                         <label className="uppercase text-gray-600 block text-xl font-bold">
                             Email
                         </label>
-                        <input className="rounded-xl border w-full mt-2 my-4 p-3 bg-gray-50" type="email" placeholder="Email de Registro" />
+                        <input className="rounded-xl border w-full mt-2 my-4 p-3 bg-gray-50"
+                         type="email" 
+                         placeholder="Email de Registro" 
+                         value={email}
+                         onChange={e=> setEmail(e.target.value)} />
                         <input className="py-3 bg-indigo-700 w-full rounded-xl font-bold  mt-5 uppercase hover:cursor-pointer hover:bg-indigo-900 md:w-auto px-10  text-white text-center" type="submit" value="Enviar instrucciones" />
                     </div>
                 </form>
